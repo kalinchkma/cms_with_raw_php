@@ -51,7 +51,6 @@ function confirm( $result ) {
     if ( !$result ) {
         die( 'Query Error .' . mysqli_error( $conn ) );
     }
-
 }
 
 function insert_categories() {
@@ -162,12 +161,14 @@ function register_user( $username, $email, $password ) {
     $password = mysqli_real_escape_string( $conn, $password );
 
     $password = password_hash( $password, PASSWORD_BCRYPT, array( 'cost' => 11 ) );
-
+ 
     $query = "INSERT INTO users(user_name, user_email, user_password, user_role) ";
     $query .= "VALUES('{$username}','{$email}','{$password}','subscriber')";
 
     $register_user_query = mysqli_query( $conn, $query );
 
+
+   
     confirm( $register_user_query );
 
 }
@@ -203,9 +204,9 @@ function login_user($username, $password) {
         $_SESSION['lastname'] = $db_user_lastname;
         $_SESSION['user_role'] = $db_user_role;
         
-        redirect('/cms01/admin');
+        redirect('/cms/admin');
     } else {
-       redirect('/cms01/index.php');
+       redirect('/cms/index.php');
     }
     
     

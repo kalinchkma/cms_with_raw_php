@@ -14,44 +14,48 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $error = [
         'username' => '',
         'email' => '',
-        'password' => ''
+        'password' => '',
     ];
+
+    $error_occurs = false;
     
     if (strlen($username) < 4) {
         $error['username'] = "Username needs to be longger than 4 chracter";
+        $error_occurs = true;
     }
     if ($username == '') {
         $error['username'] = "Username cannot be empty";
+        $error_occurs = true;
     }
     if (username_exist($username)) {
         $error['username'] = "Username already exist, try another";
+        $error_occurs = true;
     }
     
     if ($email == '') {
         $error['email'] = "Email cannot be empty";
+        $error_occurs = true;
     }
     if (email_exist($email)) {
         $error['email'] = "Email already exsit, <a href='index.php'>Please Login</a>";
+        $error_occurs = true;
     }
     if (empty($password)) {
         $error['password'] = "Password cannot be empty";
+        $error_occurs = true;
     }
     if (strlen($password) < 6 && !empty($password)){
         $error['password'] = "Password cannot be less than 6 character";
+        $error_occurs = true;
     }
     
-    foreach($error as $key => $value) {
-        
-        if(empty($value)) {
-          unset($error[$key]);
-        }
+    
+    if (!$error_occurs) {
 
+        register_user( $username, $email, $password );
+        login_user($username, $password);
     }
     
-    if (empty($error)) {
-         register_user( $username, $email, $password );
-         login_user($username, $password);
-    }
     
     
     
@@ -111,9 +115,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 }
 
 
-
-
-
 ?>
 
     <!-- Navigation -->
@@ -162,7 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 </section>
 
 
-        <hr>
+<hr>
 
 
 
